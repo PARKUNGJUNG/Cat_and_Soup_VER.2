@@ -19,6 +19,11 @@ int main(void) {
 	int cat1 = cat; // 현재 고양이 위치
 	int cat2 = cat1; // 직전 고양이 위치
 	int height = 4;
+	int cp = 0; //자원, 야옹이가 생산 및 물품 구매에 사용
+	int feel = 3; //기분 초기값
+	int feel1 = feel; //기분값 저장
+	int interaction = 0; //상호작용 초기값
+	int dice = rand() % 6 + 1; //주사위
 
 	//1-4)방 그리기
 	for (int i = 0; i < height; i++) {
@@ -67,8 +72,15 @@ int main(void) {
 	while (1) {
 
 		//1-2)상태 출력 //지금까지 만든 수프의 개수 //친밀도 값과 설명을 출력
+		//2-1)상태창 변경 CP, 기분 출력
 		printf("==================== 현재 상태 ====================\n");
 		printf("현재까지 만든 수프 : %d개\n", soup1);
+		printf("CP: %d 포인트\n", cp);
+		printf("%s이 기분(0~3): %d\n", name, feel1);
+		if (feel1 == 0) printf(" 기분이 매우 나쁩니다.\n");
+		else if (feel1 == 1) printf("  심심해합니다.\n");
+		else if (feel1 == 2) printf("  식빵을 굽습니다.\n");
+		else if (feel1 == 3) printf("  골골송을 부릅니다.\n");
 		printf("집사와의 관계(0~4) : %d\n", relation1);
 		if (relation1 == 0) printf("  곁에 오는 것조차 싫어합니다.\n");
 		else if (relation1 == 1) printf("  간식 자판기 취급입니다.\n");
@@ -109,7 +121,6 @@ int main(void) {
 
 
 		//1-3)상호작용
-		int interaction = 0;
 		int dice = rand() % 6 + 1;
 		printf("                                                                \n");
 		printf("어떤 상호작용을 하시겠습니까?   0. 아무것도 하지 않음   1. 긁어 주기\n");
@@ -162,13 +173,14 @@ int main(void) {
 		Sleep(500);
 
 		//1-5) 이동
-		int relation2 = 6 - relation1;
+		dice = rand() % 6 + 1;
+		int relation3 = 6 - relation1;
 		printf("%s 이동: 집사와 친밀할수록 냄비 쪽으로 갈 확률이 높아집니다.\n", name);
-		printf("주사위 눈이 %d 이상이면 냄비 쪽으로 이동합니다.\n", relation2);
+		printf("주사위 눈이 %d 이상이면 냄비 쪽으로 이동합니다.\n", relation3);
 		printf("주사위를 굴립니다. 또르륵...\n");
 		printf("%d이 (가) 나왔습니다!\n", dice);
 		cat2 = cat1;
-		if (dice >= relation2) {
+		if (dice >= relation3) {
 			printf("냄비 쪽으로 움직입니다.\n");
 			printf("\n");
 			//냄비 쪽으로 한 칸 이동
