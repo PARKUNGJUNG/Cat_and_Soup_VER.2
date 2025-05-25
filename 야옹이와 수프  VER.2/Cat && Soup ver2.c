@@ -186,6 +186,7 @@ int main(void) {
 		}
 		Sleep(500);
 
+		/*
 		//1-5) 이동
 		dice = rand() % 6 + 1;
 		int relation3 = 6 - relation1;
@@ -208,6 +209,22 @@ int main(void) {
 			if (cat1 - 1 > 0) {
 				cat1--;
 			}
+		}
+		*/
+
+		//2-3)이동
+		cat2 = cat1;
+		if (feel1 == 0) {
+			if (cat1 - 1 > 0) { cat1--; }
+			printf("기분이 매우 나쁜 %s은(는) 집으로 향합니다.\n", name);
+		}
+		else if (feel1 == 1) {}
+		else if (feel1 == 2) { 
+			printf("%s은(는) 기분좋게 식빵을 굽고 있습니다.\n", name); 
+		}
+		else if (feel1 == 3) {
+			if (cat1 + 1 < ROOM_WIDTH - 1) { cat1++; }
+			printf("%s은(는) 골골송을 부르며 수프를 만들러 갑니다.\n", name);
 		}
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < ROOM_WIDTH; j++) {
