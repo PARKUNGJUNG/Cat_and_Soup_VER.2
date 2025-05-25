@@ -119,10 +119,24 @@ int main(void) {
 		}
 		Sleep(500);
 
+		//2-2)기분 나빠짐
+		dice = rand() % 6 + 1;
+		int relation2 = 6 - relation1;
+		printf("\n");
+		printf("6-%d: 주사위 눈이 %d이하이면 그냥 기분이 나빠집니다.\n", relation1, relation2);
+		printf("주사위를 굴립니다. 또르르...\n");
+		printf("%d이(가) 나왔습니다.\n", dice);
+		if (dice <= relation2) {
+			int feel2 = feel1;
+			feel1 -= 1;
+			if (feel1 > 3) { feel1 = 3; }
+			else if (feel1 < 0) { feel1 = 0; }
+			printf("%s의 기분이 나빠집니다 : %d->%d\n", name, feel2, feel1);
+		}
 
 		//1-3)상호작용
 		int dice = rand() % 6 + 1;
-		printf("                                                                \n");
+		printf("\n");
 		printf("어떤 상호작용을 하시겠습니까?   0. 아무것도 하지 않음   1. 긁어 주기\n");
 	Loop:
 		printf(">> ");
