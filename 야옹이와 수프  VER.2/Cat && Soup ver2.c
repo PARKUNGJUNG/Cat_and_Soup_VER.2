@@ -4,9 +4,11 @@
 #include <time.h>
 // #define 컴파일하기 전에 실행되는 컴파일러의 한 부분. 보통 '매크로'라고 함.
 #define _CRT_SECURE_NO_WARNINGS
-#define ROOM_WIDTH 10 //방의 너비
+#define ROOM_WIDTH 15 //방의 너비
 #define HME_POS 1 //집 위치
 #define BWL_PO (ROOM_WIDTH - 2) //냄비 위치
+#define S_POS (ROOM_WIDTH - 6) //스크래처 위치
+#define T_POS (ROOM_WIDTH - 10) //캣 타워 위치
 
 int main(void) {
 	srand((unsigned int)time(NULL));
@@ -30,6 +32,12 @@ int main(void) {
 		for (int j = 0; j < ROOM_WIDTH; j++) {
 			if (i == 1 && j == HME_POS) {
 				printf("H"); // 집 위치 표시
+			}
+			else if (i == 1 && j == T_POS) {
+				printf("T"); // 캣타워 위치 표시
+			}
+			else if (i == 1 && j == S_POS) {
+				printf("S"); // 스크래처 위치 표시
 			}
 			else if (i == 1 && j == BWL_PO) {
 				printf("B"); // 냄비 위치 표시
@@ -98,6 +106,12 @@ int main(void) {
 				if (i == 1 && j == HME_POS) {
 					printf("H"); // 집 위치 표시
 				}
+				else if (i == 1 && j == T_POS) {
+					printf("T"); // 캣타워 위치 표시
+				}
+				else if (i == 1 && j == S_POS) {
+					printf("S"); // 스크래처 위치 표시
+				}
 				else if (i == 1 && j == BWL_PO) {
 					printf("B"); // 냄비 위치 표시
 				}
@@ -135,7 +149,7 @@ int main(void) {
 		}
 
 		//1-3)상호작용
-		int dice = rand() % 6 + 1;
+		dice = rand() % 6 + 1;
 		printf("\n");
 		printf("어떤 상호작용을 하시겠습니까?   0. 아무것도 하지 않음   1. 긁어 주기\n");
 	Loop:
@@ -231,6 +245,12 @@ int main(void) {
 			for (int j = 0; j < ROOM_WIDTH; j++) {
 				if (i == 1 && j == HME_POS) {
 					printf("H"); // 집 위치 표시
+				}
+				else if (i == 1 && j == T_POS) {
+					printf("T"); // 캣타워 위치 표시
+				}
+				else if (i == 1 && j == S_POS) {
+					printf("S"); // 스크래처 위치 표시
 				}
 				else if (i == 1 && j == BWL_PO) {
 					printf("B"); // 냄비 위치 표시
