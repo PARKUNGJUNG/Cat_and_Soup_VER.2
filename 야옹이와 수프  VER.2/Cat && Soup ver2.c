@@ -22,6 +22,8 @@ int main(void) {
 	int cat2 = cat1; // 직전 고양이 위치
 	int height = 4;
 	int cp = 0; //자원, 야옹이가 생산 및 물품 구매에 사용
+	int cp1 = cp; //CP값 저장
+	int cp2 = 0; //CP 생산값 저장
 	int feel = 3; //기분 초기값
 	int feel1 = feel; //기분값 저장
 	int interaction = 0; //상호작용 초기값
@@ -83,7 +85,7 @@ int main(void) {
 		//2-1)상태창 변경 CP, 기분 출력
 		printf("==================== 현재 상태 ====================\n");
 		printf("현재까지 만든 수프 : %d개\n", soup1);
-		printf("CP: %d 포인트\n", cp);
+		printf("CP: %d 포인트\n", cp2);
 		printf("%s이 기분(0~3): %d\n", name, feel1);
 		if (feel1 == 0) printf(" 기분이 매우 나쁩니다.\n");
 		else if (feel1 == 1) printf("  심심해합니다.\n");
@@ -272,6 +274,20 @@ int main(void) {
 		}
 		Sleep(500);
 
+		//2-7) CP 생산
+		printf("\n");
+		int feel2 = feel1 - 1; //(기분 -1) 값
+		if (feel2 < 0) { feel2 = 0; }
+		int CPcnt = (feel2 + relation1);
+		printf("%s의 기분(0~3): %d\n", name, feel1);
+		printf("집사와의 친밀도(0~4): %d\n", relation1);
+		printf("%s의 기분과 친밀도에 따라서 CP가 %d 포인트 생산되었습니다.\n", name, CPcnt);
+		cp1 = CPcnt;
+		cp2 += cp1;
+		printf("보유 CP: %d 포인트\n", cp2);
+		printf("\n");
+		Sleep(500);
+
 		//1-6) 행동
 		//2-4) 행동
 		if (HME_POS == cat1) {
@@ -300,15 +316,17 @@ int main(void) {
 			//과제에는 작성할 필요가 없는 코드같지만 초기화를 시켜야 되는지 안되는지 가늠이 안가 코드를 주석처리 했습니다.
 		}
 		Sleep(2500);
-		system("cls");
+		//system("cls");
 	}
 }
 
 ///물어볼 질문들
-//수프를 만들고 고양이 위치를 초기화 해야되는지. (해당 코드를 일단 주석처리하여 작성함.)
+//CP생산 매턴 마지막에 따로 출력해야되는지.
+//상호작용 처리 부분에서 '아무것도 하지 않음' 과 '긁어 주기' 를 ver.1을 삭제하고 만들어야되는지 아니면 그대로 놔두는지.
+//집에 들어온 직후에는 안된다는게. 처음에도 안된다는건지
 
 ///물어본 질문들
-
+//수프를 만들고 고양이 위치를 초기화 해야되는지. (해당 코드를 일단 주석처리하여 작성함.)
 //친밀도가 6 이상일 때, 조건이 발동되는지 (근데, 친밀도는 최대 4로 설정되어있음.)
 //친밀도의 저장값을 어느 위치에 넣어야 제대로 코드가 발동되는지. //while 밖으로
 //현재 상태랑 방을 어떻게 항상 띄우는지. //while 밖으로
