@@ -226,6 +226,7 @@ int main(void) {
 			if (cat1 + 1 < ROOM_WIDTH - 1) { cat1++; }
 			printf("%s은(는) 골골송을 부르며 수프를 만들러 갑니다.\n", name);
 		}
+		printf("\n");
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < ROOM_WIDTH; j++) {
 				if (i == 1 && j == HME_POS) {
@@ -252,7 +253,9 @@ int main(void) {
 		Sleep(500);
 
 		//1-6) 행동
+		//2-4) 행동
 		if (HME_POS == cat1) {
+			feel1++; //집
 			printf("%s은(는) 자신의 집에서 편안함을 느낍니다.\n", name);
 		}
 		else if (BWL_PO == cat1) {
