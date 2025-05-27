@@ -317,6 +317,11 @@ int main(void) {
 		Sleep(500);
 
 		//2-8) 상점
+		int store; //상점 물품 목록
+		int TR = 1; //장난감 쥐
+		int LZPT = 1; //레이저 포인터
+		int S = 1; //스크래처
+		int CT = 1; //캣 타워
 		printf("상점에서 물건을 살 수 있습니다.\n");
 		printf("어떤 물건을 구매할까요?\n");
 		printf("  0. 아무 것도 사지 않는다.\n");
@@ -324,7 +329,40 @@ int main(void) {
 		printf("  2. 레이저 포인터: 2 CP\n");
 		printf("  3. 스크래처: 4 CP\n");
 		printf("  4. 캣 타워: 6 CP\n");
+	Loop2:
 		printf(">> ");
+		scanf_s("%d", &store);
+		if (4 <= store <= 0) {
+			if (store == 0) { 
+				printf("아무 것도 사지 않습니다.\n");
+				continue;
+			}
+			if (store == 1) {
+				printf("장난감 쥐를 구매했습니다.\n");
+				cp2 -= 1;
+				printf("보유 CP %d 포인트", cp2);
+				continue;
+			}
+			if (store == 2) {
+				printf("레이저 포인터를 구매했습니다.\n");
+				cp2 -= 2;
+				printf("보유 CP %d 포인트", cp2);
+				continue;
+			}
+			if (store == 3) {
+				printf("스크래처를 구매했습니다.\n");
+				cp2 -= 4;
+				printf("보유 CP %d 포인트", cp2);
+				continue;
+			}
+			if (store == 4) {
+				printf("캣 타워를 구매했습니다.\n");
+				cp2 -= 6;
+				printf("보유 CP %d 포인트", cp2);
+				continue;
+			}
+		}
+		else { goto Loop2; }
 		printf("\n");
 
 		Sleep(2500);
