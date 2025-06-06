@@ -28,6 +28,11 @@ int main(void) {
 	int feel1 = feel; //기분값 저장
 	int interaction = 0; //상호작용 초기값
 	int dice = rand() % 6 + 1; //주사위
+	int store; //상점 물품 목록
+	int TR = 1; //장난감 쥐
+	int LZPT = 1; //레이저 포인터
+	int S = 1; //스크래처
+	int CT = 1; //캣 타워
 
 	//1-4)방 그리기
 	for (int i = 0; i < height; i++) {
@@ -35,10 +40,10 @@ int main(void) {
 			if (i == 1 && j == HME_POS) {
 				printf("H"); // 집 위치 표시
 			}
-			else if (i == 1 && j == T_POS) {
+			else if (i == 1 && j == T_POS && CT == 0) {
 				printf("T"); // 캣타워 위치 표시
 			}
-			else if (i == 1 && j == S_POS) {
+			else if (i == 1 && j == S_POS && S == 0) {
 				printf("S"); // 스크래처 위치 표시
 			}
 			else if (i == 1 && j == BWL_PO) {
@@ -108,10 +113,10 @@ int main(void) {
 				if (i == 1 && j == HME_POS) {
 					printf("H"); // 집 위치 표시
 				}
-				else if (i == 1 && j == T_POS) {
+				else if (i == 1 && j == T_POS && CT == 0) {
 					printf("T"); // 캣타워 위치 표시
 				}
-				else if (i == 1 && j == S_POS) {
+				else if (i == 1 && j == S_POS && S == 0) {
 					printf("S"); // 스크래처 위치 표시
 				}
 				else if (i == 1 && j == BWL_PO) {
@@ -248,10 +253,10 @@ int main(void) {
 				if (i == 1 && j == HME_POS) {
 					printf("H"); // 집 위치 표시
 				}
-				else if (i == 1 && j == T_POS) {
+				else if (i == 1 && j == T_POS && CT == 0) {
 					printf("T"); // 캣타워 위치 표시
 				}
-				else if (i == 1 && j == S_POS) {
+				else if (i == 1 && j == S_POS && S == 0) {
 					printf("S"); // 스크래처 위치 표시
 				}
 				else if (i == 1 && j == BWL_PO) {
@@ -317,49 +322,97 @@ int main(void) {
 		Sleep(500);
 
 		//2-8) 상점
-		int store; //상점 물품 목록
-		int TR = 1; //장난감 쥐
-		int LZPT = 1; //레이저 포인터
-		int S = 1; //스크래처
-		int CT = 1; //캣 타워
 		printf("상점에서 물건을 살 수 있습니다.\n");
 		printf("어떤 물건을 구매할까요?\n");
 		printf("  0. 아무 것도 사지 않는다.\n");
-		printf("  1. 장난감 쥐: 1 CP\n");
-		printf("  2. 레이저 포인터: 2 CP\n");
-		printf("  3. 스크래처: 4 CP\n");
-		printf("  4. 캣 타워: 6 CP\n");
+		if (TR == 1) { printf("  1. 장난감 쥐: 1 CP\n"); }
+		else if (TR == 0) { printf("  1. 장난감 쥐: 1 CP (품절)\n"); }
+		if (LZPT == 1) { printf("  2. 레이저 포인터: 2 CP\n"); }
+		else if (LZPT == 0) { printf("  2. 레이저 포인터: 2 CP (품절)\n"); }
+		if (S == 1) { printf("  3. 스크래처: 4 CP\n"); }
+		else if (S == 0) { printf("  3. 스크래처: 4 CP (품절)\n"); }
+		if (CT == 1) { printf("  4. 캣 타워: 6 CP\n"); }
+		else if (CT == 0) { printf("  4. 캣 타워: 6 CP (품절)\n"); }
+
 	Loop2:
 		printf(">> ");
 		scanf_s("%d", &store);
-		if (4 <= store <= 0) {
-			if (store == 0) { 
+		if (0 <= store && store <= 4) {
+			if (store == 0) {
 				printf("아무 것도 사지 않습니다.\n");
 				continue;
 			}
+
 			if (store == 1) {
-				printf("장난감 쥐를 구매했습니다.\n");
-				cp2 -= 1;
-				printf("보유 CP %d 포인트", cp2);
-				continue;
+				if (TR == 0) {
+					printf("장난감 쥐를 이미 구매했습니다.\n");
+					goto Loop2;
+				}
+				if (cp2 >= 1) {
+					printf("장난감 쥐를 구매했습니다.\n");
+					TR = 0;
+					cp2 -= 1;
+					printf("보유 CP %d 포인트\n", cp2);
+					continue;
+				}
+				else if (cp2 < 1) {
+					printf("CP가 부족합니다.\n");
+					goto Loop2;
+				}
 			}
+
 			if (store == 2) {
-				printf("레이저 포인터를 구매했습니다.\n");
-				cp2 -= 2;
-				printf("보유 CP %d 포인트", cp2);
-				continue;
+				if (LZPT == 0) {
+					printf("레이저 포인터를 이미 구매했습니다.\n");
+					goto Loop2;
+				}
+				if (cp2 >= 2) {
+					printf("레이저 포인터를 구매했습니다.\n");
+					LZPT = 0;
+					cp2 -= 2;
+					printf("보유 CP %d 포인트\n", cp2);
+					continue;
+				}
+				else if (cp2 < 2) {
+					printf("CP가 부족합니다.\n");
+					goto Loop2;
+				}
 			}
+
 			if (store == 3) {
-				printf("스크래처를 구매했습니다.\n");
-				cp2 -= 4;
-				printf("보유 CP %d 포인트", cp2);
+				if (S == 0) {
+					printf("스크래처를 이미 구매했습니다.\n");
+					goto Loop2;
+				}
+				if (cp2 >= 4) {
+					printf("스크래처를 구매했습니다.\n");
+					S = 0;
+					cp2 -= 4;
+					printf("보유 CP %d 포인트\n", cp2);
+					continue;
+				}
+				else if (cp2 < 4) {
+					printf("CP가 부족합니다.\n");
+					goto Loop2;
+				}
+			}
+
+			if (store == 4) {
+				if (CT == 0) {
+					printf("캣 타워를 이미 구매했습니다.\n");
+					goto Loop2;
+				}
+			 if (cp2 >= 6) {
+				printf("캣 타워를 구매했습니다.\n");
+				CT = 0;
+				cp2 -= 6;
+				printf("보유 CP %d 포인트\n", cp2);
 				continue;
 			}
-			if (store == 4) {
-				printf("캣 타워를 구매했습니다.\n");
-				cp2 -= 6;
-				printf("보유 CP %d 포인트", cp2);
-				continue;
+			else if (cp2 < 6) {
+				printf("CP가 부족합니다.\n");
+				goto Loop2;
+			}
 			}
 		}
 		else { goto Loop2; }
