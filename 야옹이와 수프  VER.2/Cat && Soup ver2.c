@@ -106,8 +106,98 @@ int main(void) {
 		printf("												   \n");
 		Sleep(500);
 
+		//2-2)기분 나빠짐
+		dice = rand() % 6 + 1;
+		int relation2 = 6 - relation1;
+		printf("6-%d: 주사위 눈이 %d이하이면 그냥 기분이 나빠집니다.\n", relation1, relation2);
+		printf("주사위를 굴립니다. 또르르...\n");
+		printf("%d이(가) 나왔습니다.\n", dice);
+		if (dice <= relation2) {
+			int feel2 = feel1;
+			feel1 -= 1;
+			if (feel1 > 3) { feel1 = 3; }
+			else if (feel1 < 0) { feel1 = 0; }
+			printf("%s의 기분이 나빠집니다 : %d->%d\n", name, feel2, feel1);
+		}
+		printf("\n");
 
-		//1-4)방 그리기
+		/*
+		//1-5) 이동
+		dice = rand() % 6 + 1;
+		int relation3 = 6 - relation1;
+		printf("%s 이동: 집사와 친밀할수록 냄비 쪽으로 갈 확률이 높아집니다.\n", name);
+		printf("주사위 눈이 %d 이상이면 냄비 쪽으로 이동합니다.\n", relation3);
+		printf("주사위를 굴립니다. 또르륵...\n");
+		printf("%d이 (가) 나왔습니다!\n", dice);
+		cat2 = cat1;
+		if (dice >= relation3) {
+			printf("냄비 쪽으로 움직입니다.\n");
+			printf("\n");
+			//냄비 쪽으로 한 칸 이동
+			if (cat1 + 1 < ROOM_WIDTH - 1) {
+				cat1++;
+			}
+		}
+		else {
+			//집 쪽으로 한 칸 이동
+			printf("\n");
+			if (cat1 - 1 > 0) {
+				cat1--;
+			}
+		}
+		*/
+
+		//2-3)이동
+		cat2 = cat1;
+		if (feel1 == 0) {
+			if (cat1 - 1 > 0) { cat1--; }
+			printf("기분이 매우 나쁜 %s은(는) 집으로 향합니다.\n", name);
+		}
+		else if (feel1 == 1) {
+			if (S == 1 && CT == 1) {
+				feel1--;
+				printf("놀 거리가 없어서 기분이 매우 나빠집니다.\n");
+			}
+		}
+		else if (feel1 == 2) {
+			printf("%s은(는) 기분좋게 식빵을 굽고 있습니다.\n", name);
+		}
+		else if (feel1 == 3) {
+			if (cat1 + 1 < ROOM_WIDTH - 1) { cat1++; }
+			printf("%s은(는) 골골송을 부르며 수프를 만들러 갑니다.\n", name);
+		}
+		printf("\n");
+
+		//1-6) 행동
+		//2-4) 행동
+		if (HME_POS == cat1) {
+			feel1++; //집
+			printf("%s은(는) 자신의 집에서 편안함을 느낍니다.\n", name);
+		}
+		else if (BWL_PO == cat1) {
+			printf("%s이(가) ", name);
+			int choicesoup = rand() % 3;
+			if (choicesoup == 0) {
+				printf("양송이 수프");
+			}
+			else if (choicesoup == 1) {
+				printf("감자 수프");
+			}
+			else if (choicesoup == 2) {
+				printf("브로콜리 수프");
+			}
+			printf("를 만들었습니다!\n");
+			soup++;
+			soup1 = soup;
+			printf("현재까지 만든 수프: %d개\n", soup);
+			//cat1 = cat; //수프를 만들면 고양이의 위치를 초기화
+			//cat2 = cat1; //직전의 위치도 현재 위치랑 동일하게 설정.
+			//수프를 만들면 고양이의 위치를 초기화 시키는 코드입니다.
+			//과제에는 작성할 필요가 없는 코드같지만 초기화를 시켜야 되는지 안되는지 가늠이 안가 코드를 주석처리 했습니다.
+		}
+
+		//1-4) 방 그리기
+		printf("\n");
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < ROOM_WIDTH; j++) {
 				if (i == 1 && j == HME_POS) {
@@ -128,7 +218,6 @@ int main(void) {
 				else if (i == 2 && j == cat2 && cat2 != cat1) {
 					printf("."); //고양이 직전 위치 표시
 				}
-				// 경계 그리기
 				else if (i == 0 || i == height - 1 || j == 0 || j == ROOM_WIDTH - 1) {
 					printf("#");
 				}
@@ -139,21 +228,6 @@ int main(void) {
 			printf("\n");
 		}
 		Sleep(500);
-
-		//2-2)기분 나빠짐
-		dice = rand() % 6 + 1;
-		int relation2 = 6 - relation1;
-		printf("\n");
-		printf("6-%d: 주사위 눈이 %d이하이면 그냥 기분이 나빠집니다.\n", relation1, relation2);
-		printf("주사위를 굴립니다. 또르르...\n");
-		printf("%d이(가) 나왔습니다.\n", dice);
-		if (dice <= relation2) {
-			int feel2 = feel1;
-			feel1 -= 1;
-			if (feel1 > 3) { feel1 = 3; }
-			else if (feel1 < 0) { feel1 = 0; }
-			printf("%s의 기분이 나빠집니다 : %d->%d\n", name, feel2, feel1);
-		}
 
 		//1-3)상호작용
 		dice = rand() % 6 + 1;
@@ -206,106 +280,6 @@ int main(void) {
 			goto Loop;
 		}
 		Sleep(500);
-
-		/*
-		//1-5) 이동
-		dice = rand() % 6 + 1;
-		int relation3 = 6 - relation1;
-		printf("%s 이동: 집사와 친밀할수록 냄비 쪽으로 갈 확률이 높아집니다.\n", name);
-		printf("주사위 눈이 %d 이상이면 냄비 쪽으로 이동합니다.\n", relation3);
-		printf("주사위를 굴립니다. 또르륵...\n");
-		printf("%d이 (가) 나왔습니다!\n", dice);
-		cat2 = cat1;
-		if (dice >= relation3) {
-			printf("냄비 쪽으로 움직입니다.\n");
-			printf("\n");
-			//냄비 쪽으로 한 칸 이동
-			if (cat1 + 1 < ROOM_WIDTH - 1) {
-				cat1++;
-			}
-		}
-		else {
-			//집 쪽으로 한 칸 이동
-			printf("\n");
-			if (cat1 - 1 > 0) {
-				cat1--;
-			}
-		}
-		*/
-
-		//2-3)이동
-		cat2 = cat1;
-		if (feel1 == 0) {
-			if (cat1 - 1 > 0) { cat1--; }
-			printf("기분이 매우 나쁜 %s은(는) 집으로 향합니다.\n", name);
-		}
-		else if (feel1 == 1) {}
-		else if (feel1 == 2) { 
-			printf("%s은(는) 기분좋게 식빵을 굽고 있습니다.\n", name); 
-		}
-		else if (feel1 == 3) {
-			if (cat1 + 1 < ROOM_WIDTH - 1) { cat1++; }
-			printf("%s은(는) 골골송을 부르며 수프를 만들러 갑니다.\n", name);
-		}
-		printf("\n");
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < ROOM_WIDTH; j++) {
-				if (i == 1 && j == HME_POS) {
-					printf("H"); // 집 위치 표시
-				}
-				else if (i == 1 && j == T_POS && CT == 0) {
-					printf("T"); // 캣타워 위치 표시
-				}
-				else if (i == 1 && j == S_POS && S == 0) {
-					printf("S"); // 스크래처 위치 표시
-				}
-				else if (i == 1 && j == BWL_PO) {
-					printf("B"); // 냄비 위치 표시
-				}
-				else if (i == 2 && j == cat1) {
-					printf("C"); //고양이 위치 표시
-				}
-				else if (i == 2 && j == cat2 && cat2 != cat1) {
-					printf("."); //고양이 직전 위치 표시
-				}
-				else if (i == 0 || i == height - 1 || j == 0 || j == ROOM_WIDTH - 1) {
-					printf("#");
-				}
-				else {
-					printf(" ");
-				}
-			}
-			printf("\n");
-		}
-		Sleep(500);
-
-		//1-6) 행동
-		//2-4) 행동
-		if (HME_POS == cat1) {
-			feel1++; //집
-			printf("%s은(는) 자신의 집에서 편안함을 느낍니다.\n", name);
-		}
-		else if (BWL_PO == cat1) {
-			printf("%s이(가) ", name);
-			int choicesoup = rand() % 3;
-			if (choicesoup == 0) {
-				printf("양송이 수프");
-			}
-			else if (choicesoup == 1) {
-				printf("감자 수프");
-			}
-			else if (choicesoup == 2) {
-				printf("브로콜리 수프");
-			}
-			printf("를 만들었습니다!\n");
-			soup++;
-			soup1 = soup;
-			printf("현재까지 만든 수프: %d개\n", soup);
-			//cat1 = cat; //수프를 만들면 고양이의 위치를 초기화
-			//cat2 = cat1; //직전의 위치도 현재 위치랑 동일하게 설정.
-			//수프를 만들면 고양이의 위치를 초기화 시키는 코드입니다.
-			//과제에는 작성할 필요가 없는 코드같지만 초기화를 시켜야 되는지 안되는지 가늠이 안가 코드를 주석처리 했습니다.
-		}
 
 		//2-7) CP 생산
 		printf("\n");
