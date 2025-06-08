@@ -183,7 +183,7 @@ int main(void) {
 				else if (cat1 > target_pos) {
 					cat1--; // 왼쪽으로 이동
 				}
-				printf("%s은(는) 심심해서 스크래처 쪽으로 이동합니다.\n", name);
+				printf("%s은(는) 심심해서 더 가까운 놀이기구 쪽으로 이동합니다.\n", name);
 			}
 			else {
 				feel1--;
@@ -204,6 +204,22 @@ int main(void) {
 		if (HME_POS == cat1) {
 			feel1++; //집
 			printf("%s은(는) 자신의 집에서 편안함을 느낍니다.\n", name);
+		}
+		if (S == 0) {
+			if (S_POS == cat1) {
+				int feel2 = feel1;
+				feel1++;
+				printf("%s은(는) 스크래처를 긁고 놀았습니다.\n", name);
+				printf("기분이 조금 좋아졌습니다: %d->%d\n", feel2, feel1);
+			}
+		}
+		if (CT == 0) {
+			if (T_POS == cat1) {
+				int feel2 = feel1;
+				feel1 += 2;
+				printf("%s은(는) 캣타워를 뛰어다닙니다.\n", name);
+				printf("기분이 제법 좋아졌습니다: %d->%d\n", feel2, feel1);
+			}
 		}
 		else if (BWL_PO == cat1) {
 			printf("%s이(가) ", name);
@@ -298,12 +314,10 @@ int main(void) {
 						relation1 = 4;
 					}
 					printf("현재 친밀도: %d\n", relation1);
-					printf("\n");
 				}
 				else {
 					printf("친밀도는 그대로입니다.\n");
 					printf("현재 친밀도: %d\n", relation1);
-					printf("\n");
 				}
 			}
 		}
