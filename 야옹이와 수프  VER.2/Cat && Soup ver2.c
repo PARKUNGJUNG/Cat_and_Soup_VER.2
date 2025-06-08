@@ -33,8 +33,9 @@ int main(void) {
 	int LZPT = 1; //레이저 포인터
 	int S = 1; //스크래처
 	int CT = 1; //캣 타워
-	int item_list[2] = { 0 }; //아이템 지정 배열
+	int item_list[2] = { 0 }; //아이템 지정 배열, 최대 2개(TR, LZPT)
 	int purchase = 0; //구매한 번호 부여
+	int max_choice = 1 + purchase; //동적 범위 계산
 
 	//1-4)방 그리기
 	for (int i = 0; i < height; i++) {
@@ -87,6 +88,8 @@ int main(void) {
 
 	//1-1)인트로 & 준비
 	while (1) {
+		Sleep(1000);
+		system("cls");
 
 		//1-2)상태 출력 //지금까지 만든 수프의 개수 //친밀도 값과 설명을 출력
 		//2-1)상태창 변경 CP, 기분 출력
@@ -189,6 +192,8 @@ int main(void) {
 			}
 			else {
 				feel1--;
+				if (feel1 > 3) { feel1 = 3; }
+				else if (feel1 < 0) { feel1 = 0; }
 				printf("놀 거리가 없어서 기분이 매우 나빠집니다.\n");
 			}
 		}
@@ -205,12 +210,16 @@ int main(void) {
 		//2-4) 행동
 		if (HME_POS == cat1) {
 			feel1++; //집
+			if (feel1 > 3) { feel1 = 3; }
+			else if (feel1 < 0) { feel1 = 0; }
 			printf("%s은(는) 자신의 집에서 편안함을 느낍니다.\n", name);
 		}
 		if (S == 0) {
 			if (S_POS == cat1) {
 				int feel2 = feel1;
 				feel1++;
+				if (feel1 > 3) { feel1 = 3; }
+				else if (feel1 < 0) { feel1 = 0; }
 				printf("%s은(는) 스크래처를 긁고 놀았습니다.\n", name);
 				printf("기분이 조금 좋아졌습니다: %d->%d\n", feel2, feel1);
 			}
@@ -219,11 +228,13 @@ int main(void) {
 			if (T_POS == cat1) {
 				int feel2 = feel1;
 				feel1 += 2;
+				if (feel1 > 3) { feel1 = 3; }
+				else if (feel1 < 0) { feel1 = 0; }
 				printf("%s은(는) 캣타워를 뛰어다닙니다.\n", name);
 				printf("기분이 제법 좋아졌습니다: %d->%d\n", feel2, feel1);
 			}
 		}
-		else if (BWL_PO == cat1) {
+		if (BWL_PO == cat1) {
 			printf("%s이(가) ", name);
 			int choicesoup = rand() % 3;
 			if (choicesoup == 0) {
@@ -280,6 +291,8 @@ int main(void) {
 
 		//1-3)상호작용
 		//2-5)상호작용 입력
+		//2-6)상호작용 처리
+		
 		dice = rand() % 6 + 1;
 		printf("\n");
 		printf("어떤 상호작용을 하시겠습니까?\n");
@@ -291,17 +304,20 @@ int main(void) {
 				case 2: printf("  %d. 레이저 포인터로 놀아 주기\n", i + 2); break;
 				}
 			}
-	Loop:
+		Loop:
 		printf(">> ");
 		scanf_s("%d", &interaction);
-		if (interaction == 0 || interaction == 1) {
 			if (interaction == 0) {
-				printf("아무것도 하지 않습니다.\n");
-				printf("4/6의 확률로 친밀도가 떨어집니다.\n");
+				int feel2 = feel1;
+				feel1--;
+				if (feel1 > 3) { feel1 = 3; }
+				else if (feel1 < 0) { feel1 = 0; }
+				printf("%s의 기분이 나빠졌습니다: %d->%d\n",name, feel2, feel1);
+				printf("주사위를 던져서 눈이 5 이하이면 관계가 1 감소합니다.\n");
 				printf("주사위를 굴립니다. 또르륵...\n");
 				printf("%d이(가) 나왔습니다!\n", dice);
-				if (dice <= 4) {
-					printf("친밀도가 떨어집니다.\n");
+				if (dice <= 5) {
+					printf("집사와의 관계가 나빠집니다.\n");
 					relation1 -= 1;
 					if (relation1 < 0) {
 						relation1 = 0;
@@ -313,9 +329,11 @@ int main(void) {
 					printf("현재 친밀도: %d\n", relation1);
 				}
 			}
-			else {
+
+			if (interaction == 1) {
 				printf("%s의 턱을 긁어주었습니다.\n", name);
-				printf("2/6의 확률로 친밀도가 높아집니다.\n");
+				printf("%s의 기분은 그대로입니다: %d\n",name, feel1);
+				printf("주사위가 5 이상이면 관계가 1 증가합니다.\n");
 				printf("주사위를 굴립니다. 또르륵...\n");
 				printf("%d이(가) 나왔습니다!\n", dice);
 				if (dice == 5 || dice == 6) {
@@ -331,8 +349,110 @@ int main(void) {
 					printf("현재 친밀도: %d\n", relation1);
 				}
 			}
-		}
-		else {
+			
+			if (interaction >= 2) {
+				int item_index = interaction - 2;
+				if (item_index >= purchase) {
+					goto Loop;
+				}
+
+				switch (item_list[item_index]) {
+				case 1: // 장난감 쥐 처리
+					printf("장난감 쥐로 %s와 놀아 주었습니다.\n", name);
+					int feel2 = feel1;
+					feel1++;
+					if (feel1 > 3) { feel1 = 3; }
+					else if (feel1 < 0) { feel1 = 0; }
+					printf("%s의 기분이 조금 좋아졌습니다: %d->%d\n", name, feel2, feel1);
+					printf("주사위가 4 이상이면 관계가 1 증가합니다.\n");
+					printf("주사위를 굴립니다. 또르륵...\n");
+					printf("%d이(가) 나왔습니다!\n", dice);
+					if (dice >= 4) {
+						printf("친밀도가 높아집니다.\n");
+						relation1 += 1;
+						if (relation1 > 4) {
+							relation1 = 4;
+						}
+						printf("현재 친밀도: %d\n", relation1);
+					}
+					else {
+						printf("친밀도는 그대로입니다.\n");
+						printf("현재 친밀도: %d\n", relation1);
+					}
+					break;
+
+				case 2: // 레이저 포인터 처리 
+					printf("레이저 포인터로 %s와 신나게 놀아 주었습니다.\n", name);
+					feel2 = feel1;
+					feel1 += 2;
+					if (feel1 > 3) { feel1 = 3; }
+					else if (feel1 < 0) { feel1 = 0; }
+					printf("%s의 기분이 꽤 좋아졌습니다: %d->%d\n", name, feel2, feel1);
+					printf("주사위가 2 이상이면 관계가 1 증가합니다.\n");
+					printf("주사위를 굴립니다. 또르륵...\n");
+					printf("%d이(가) 나왔습니다!\n", dice);
+					if (dice >= 2) {
+						printf("친밀도가 높아집니다.\n");
+						relation1 += 1;
+						if (relation1 > 4) {
+							relation1 = 4;
+						}
+						printf("현재 친밀도: %d\n", relation1);
+					}
+					else {
+						printf("친밀도는 그대로입니다.\n");
+						printf("현재 친밀도: %d\n", relation1);
+					}
+					break;
+				}
+			}
+
+			/*
+			if (interaction == 2) {
+				printf("장난감 쥐로 %s와 놀아 주었습니다.\n", name);
+				int feel2 = feel1;
+				feel1++;
+				printf("%s의 기분이 조금 좋아졌습니다: %d->%d\n", name, feel2, feel1);
+				printf("주사위가 4 이상이면 관계가 1 증가합니다.\n");
+				printf("주사위를 굴립니다. 또르륵...\n");
+				printf("%d이(가) 나왔습니다!\n", dice);
+				if (dice >= 4) {
+					printf("친밀도가 높아집니다.\n");
+					relation1 += 1;
+					if (relation1 > 4) {
+						relation1 = 4;
+					}
+					printf("현재 친밀도: %d\n", relation1);
+				}
+				else {
+					printf("친밀도는 그대로입니다.\n");
+					printf("현재 친밀도: %d\n", relation1);
+				}
+			}
+
+			if (interaction == 3) {
+				printf("레이저 포인터로 %s와 신나게 놀아 주었습니다.\n", name);
+				int feel2 = feel1;
+				feel1 += 2;
+				printf("%s의 기분이 꽤 좋아졌습니다: %d->%d\n", name, feel2, feel1);
+				printf("주사위가 2 이상이면 관계가 1 증가합니다.\n");
+				printf("주사위를 굴립니다. 또르륵...\n");
+				printf("%d이(가) 나왔습니다!\n", dice);
+				if (dice >= 2) {
+					printf("친밀도가 높아집니다.\n");
+					relation1 += 1;
+					if (relation1 > 4) {
+						relation1 = 4;
+					}
+					printf("현재 친밀도: %d\n", relation1);
+				}
+				else {
+					printf("친밀도는 그대로입니다.\n");
+					printf("현재 친밀도: %d\n", relation1);
+				}
+			}
+			*/
+		else if (interaction < 0 || interaction > max_choice) {
 			goto Loop;
 		}
 		Sleep(500);
