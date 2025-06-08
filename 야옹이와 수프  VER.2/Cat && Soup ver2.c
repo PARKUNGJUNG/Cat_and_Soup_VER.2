@@ -33,6 +33,8 @@ int main(void) {
 	int LZPT = 1; //레이저 포인터
 	int S = 1; //스크래처
 	int CT = 1; //캣 타워
+	int item_list[2] = { 0 }; //아이템 지정 배열
+	int purchase = 0; //구매한 번호 부여
 
 	//1-4)방 그리기
 	for (int i = 0; i < height; i++) {
@@ -277,9 +279,18 @@ int main(void) {
 		Sleep(500);
 
 		//1-3)상호작용
+		//2-5)상호작용 입력
 		dice = rand() % 6 + 1;
 		printf("\n");
-		printf("어떤 상호작용을 하시겠습니까?   0. 아무것도 하지 않음   1. 긁어 주기\n");
+		printf("어떤 상호작용을 하시겠습니까?\n");
+		printf("  0. 아무것도 하지 않음\n");
+		printf("  1. 긁어 주기\n");
+			for (int i = 0; i < purchase; i++) {
+				switch (item_list[i]) {
+				case 1: printf("  %d. 장난감 쥐로 놀아 주기\n", i + 2); break;
+				case 2: printf("  %d. 레이저 포인터로 놀아 주기\n", i + 2); break;
+				}
+			}
 	Loop:
 		printf(">> ");
 		scanf_s("%d", &interaction);
@@ -369,6 +380,7 @@ int main(void) {
 				}
 				if (cp2 >= 1) {
 					printf("장난감 쥐를 구매했습니다.\n");
+					item_list[purchase++] = 1;
 					TR = 0;
 					cp2 -= 1;
 					printf("보유 CP %d 포인트\n", cp2);
@@ -387,6 +399,7 @@ int main(void) {
 				}
 				if (cp2 >= 2) {
 					printf("레이저 포인터를 구매했습니다.\n");
+					item_list [purchase++] = 2;
 					LZPT = 0;
 					cp2 -= 2;
 					printf("보유 CP %d 포인트\n", cp2);
