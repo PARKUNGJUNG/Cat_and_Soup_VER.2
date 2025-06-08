@@ -154,7 +154,38 @@ int main(void) {
 			printf("기분이 매우 나쁜 %s은(는) 집으로 향합니다.\n", name);
 		}
 		else if (feel1 == 1) {
-			if (S == 1 && CT == 1) {
+			// 스크래처나 캣타워가 하나라도 있으면
+			if (S == 0 || CT == 0) {
+				int min_dist = ROOM_WIDTH; // 최대 거리로 초기화
+				int target_pos = cat1;     // 기본값은 현재 위치
+
+				// 스크래처가 있으면 거리 계산
+				if (S == 0) {
+					int dist = abs(S_POS - cat1); //abs = 절댓값
+					if (dist < min_dist) {
+						min_dist = dist;
+						target_pos = S_POS;
+					}
+				}
+				// 캣타워가 있으면 거리 계산
+				if (CT == 0) {
+					int dist = abs(T_POS - cat1);
+					if (dist < min_dist) {
+						min_dist = dist;
+						target_pos = T_POS;
+					}
+				}
+
+				// 이동 (한 칸씩 이동)
+				if (cat1 < target_pos) {
+					cat1++; // 오른쪽으로 이동
+				}
+				else if (cat1 > target_pos) {
+					cat1--; // 왼쪽으로 이동
+				}
+				printf("%s은(는) 심심해서 스크래처 쪽으로 이동합니다.\n", name);
+			}
+			else {
 				feel1--;
 				printf("놀 거리가 없어서 기분이 매우 나빠집니다.\n");
 			}
@@ -393,7 +424,7 @@ int main(void) {
 		printf("\n");
 
 		Sleep(2500);
-		//system("cls");
+		system("cls");
 	}
 }
 
