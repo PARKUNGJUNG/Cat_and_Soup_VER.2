@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <Windows.h>
 #include <time.h>
+#include <conio.h> //_getch(), _kbhit() 함수를 위해 사용.
+
 // #define 컴파일하기 전에 실행되는 컴파일러의 한 부분. 보통 '매크로'라고 함.
 #define _CRT_SECURE_NO_WARNINGS
 #define ROOM_WIDTH 15 //방의 너비
@@ -88,7 +90,7 @@ int main(void) {
 
 	//1-1)인트로 & 준비
 	while (1) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 1; i++) {
 			Sleep(1000);
 			system("cls");
 
@@ -574,7 +576,59 @@ int main(void) {
 			Sleep(2500);
 			system("cls");
 		}
-		printf("돌발 퀘스트 발생\n");
+		//2-9) 돌발 퀘스트
+		printf("\n돌발 퀘스트 발생!\n");
+		int quest = rand() % 2;
+		switch (quest) {
+		case 0: // 고양이와의 미니게임
+			printf("고양이와 미니게임을 시작합니다!\n");
+			printf("5초 안에 'a' 키를 10번 입력하세요!\n");
+			int count = 0;
+			time_t start = time(NULL);
+			while (difftime(time(NULL), start) < 5.0) {
+				if (_kbhit()) { //_kbhit() 키보드가 눌렸는지 체크해줌.
+					if (_getch() == 'a') { //_getch() 키보드 입력을 받고 출력은 해주지 않음.
+						count++;
+						printf("성공! (%d/10)\n", count);
+					}
+				}
+			}
+			if (count >= 10) {
+				printf("미니게임 성공! %s의 기분이 좋아졌습니다!\n", name);
+				feel1++;
+				if (feel1 > 3) feel1 = 3;
+			}
+			else {
+				printf("미니게임 실패! 다음에 다시 도전하세요.\n");
+			}
+			break;
+
+		case 1: // 고양이 놀아주기 챌린지
+			printf("고양이 놀아주기 챌린지!\n");
+			printf("10초 동안 고양이와 상호작용(긁어주기, 장난감 등)을 최대한 많이 하세요!\n");
+			printf("(엔터를 누를 때마다 상호작용 1회)\n");
+			int interaction_count = 0;
+			start = time(NULL);
+			while (difftime(time(NULL), start) < 10.0) {
+				if (_kbhit()) {
+					if (_getch() == '\r') { //\r 엔터
+						interaction_count++;
+						printf("상호작용 %d회!\n", interaction_count);
+					}
+				}
+			}
+			printf("총 %d회 상호작용!\n", interaction_count);
+			if (interaction_count >= 3) {
+				printf("챌린지 성공! %s와 친밀도가 올랐습니다!\n", name);
+				relation1++;
+				if (relation1 > 4) relation1 = 4;
+			}
+			else {
+				printf("조금 더 노력해보세요!\n");
+			}
+			break;
+		}
+		printf("\n");
 	}
 }
 
