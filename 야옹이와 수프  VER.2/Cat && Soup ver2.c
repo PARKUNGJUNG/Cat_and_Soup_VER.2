@@ -9,8 +9,29 @@
 #define ROOM_WIDTH 15 //방의 너비
 #define HME_POS 1 //집 위치
 #define BWL_PO (ROOM_WIDTH - 2) //냄비 위치
-#define S_POS (ROOM_WIDTH - 6) //스크래처 위치
-#define T_POS (ROOM_WIDTH - 10) //캣 타워 위치
+int S_POS, T_POS;
+
+// 빈 위치 찾기 함수
+int is_position_free(int pos, int cat_pos, int H_pos, int B_pos, int S_pos, int CT_pos) {
+	if (pos == 0 || pos == ROOM_WIDTH - 1) return 0; // 벽 위치 제외
+	if (pos == H_pos) return 0; // 집 위치 제외
+	if (pos == B_pos) return 0; // 냄비 위치 제외
+	if (pos == S_pos && S_pos != 0) return 0; // 기존 스크래처 위치 제외 (S_pos가 0이면 아직 배치 안됨)
+	if (pos == CT_pos && CT_pos != 0) return 0; // 기존 캣타워 위치 제외 (CT_pos가 0이면 아직 배치 안됨)
+	if (pos == cat_pos) return 0; // 고양이 위치 제외
+	return 1; // 사용 가능
+}
+
+int find_random_free_position(int cat_pos, int H_pos, int B_pos, int S_pos, int CT_pos) {
+	int pos;
+	int try = 0;
+	do {
+		pos = rand() % (ROOM_WIDTH - 2) + 1; // 1 ~ ROOM_WIDTH-2 범위
+		try++;
+		if (try > 100) break; // 무한 루프 방지
+	} while (!is_position_free(pos, cat_pos, H_pos, B_pos, S_pos, CT_pos));
+	return pos;
+}
 
 int main(void) {
 	srand((unsigned int)time(NULL));
@@ -541,6 +562,7 @@ int main(void) {
 					}
 					if (cp2 >= 4) {
 						printf("스크래처를 구매했습니다.\n");
+						S_POS = find_random_free_position(cat1, HME_POS, BWL_PO, S_POS, T_POS);
 						S = 0;
 						cp2 -= 4;
 						printf("보유 CP %d 포인트\n", cp2);
@@ -559,6 +581,7 @@ int main(void) {
 					}
 					if (cp2 >= 6) {
 						printf("캣 타워를 구매했습니다.\n");
+						T_POS = find_random_free_position(cat1, HME_POS, BWL_PO, S_POS, T_POS);
 						CT = 0;
 						cp2 -= 6;
 						printf("보유 CP %d 포인트\n", cp2);
@@ -648,7 +671,3 @@ int main(void) {
 //CP생산 매턴 마지막에 따로 출력해야되는지. //표시하지 않은건 아무데나 출력
 //상호작용 처리 부분에서 '아무것도 하지 않음' 과 '긁어 주기' 를 ver.1을 삭제하고 만들어야되는지 아니면 그대로 놔두는지. //ver.1을 수정해도 되지만 알아서 잘 버무리기
 //집에 들어온 직후에는 안된다는게. 처음에도 안된다는건지 //맞음.
-
-
-
-
